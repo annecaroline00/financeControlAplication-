@@ -1,3 +1,5 @@
+import datetime
+
 from core.configs import settings
 from sqlalchemy import Column, DateTime, Float, Integer, String, func
 
@@ -7,7 +9,7 @@ class OperationModel(settings.DB_BASE_MODEL):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     codigo: str = Column(String(8))
-    data = Column(DateTime(timezone=True))
+    data = Column(DateTime, default=datetime.datetime.utcnow)
     quantidade: int = Column(Integer)
     valor_unitario: float = Column(Float)
     tipo_operacao: str = Column(String(8))

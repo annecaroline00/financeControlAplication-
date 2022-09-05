@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-title>Nova Operação</mat-card-title>
+  <form>
+      <mat-form-field><input matInput [(ngModel)]="operation.codigo" placeholder="Código" name="codigo"></mat-form-field>
+      <mat-form-field><input matInput [(ngModel)]="operation.quantidade" placeholder="Quantidade" name="quantidade"></mat-form-field>
+      <mat-form-field><input matInput [(ngModel)]="operation.valor_unitario" placeholder="Valor Unitário" name="valor_unitario"></mat-form-field>
+      <mat-form-field><input matInput [(ngModel)]="operation.tipo_operacao" placeholder="Tipo da Operação" name="tipo_operacao"></mat-form-field>
+      <mat-form-field><input matInput [(ngModel)]="operation.corretagem" placeholder="Corretagem" name="corretagem"></mat-form-field>
+  </form>
+  <button mat-raised-button (click)="createOperation()" color="primary">
+      Salvar
+  </button>
+
+  <button mat-raised-button (click)="cancel()">
+      Cancelar
+  </button>
+</mat-card>

@@ -5,7 +5,7 @@ from core.dependencies import get_session
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from models.operation_model import OperationModel
 from schemas.operation_schema import OperationSchema
-from sqlalchemy import func
+from sqlalchemy import DateTime, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -16,17 +16,17 @@ router = APIRouter()
 async def criar_operacao(operation: OperationSchema, db: AsyncSession = Depends(get_session)):
     nova_operacao = OperationModel(
         codigo=operation.codigo,
-        data=datetime.now(),
+        data=operation.data,
         quantidade=operation.quantidade,
         valor_unitario=operation.valor_unitario,
         tipo_operacao=operation.tipo_operacao,
         valor_parcial=(operation.quantidade * operation.valor_unitario),
         corretagem=operation.corretagem,
-        taxa=operation.taxa,
+        taxa=(operation.quantidade * operation.valor_unitario)*0.03,
         valor_final=((operation.quantidade * operation.valor_unitario) +
-                     operation.corretagem + operation.taxa)
+                     operation.corretagem + ((operation.quantidade * operation.valor_unitario)*0.03))
         if operation.tipo_operacao == 'COMPRA' else (
-            (operation.quantidade * operation.valor_unitario) - operation.corretagem - operation.taxa)
+            (operation.quantidade * operation.valor_unitario) - operation.corretagem - ((operation.quantidade * operation.valor_unitario)*0.03))
 
     )
     db.add(nova_operacao)
@@ -63,22 +63,29 @@ async def put_operation(operation_id: int, current_operation: OperationSchema, d
         query = select(OperationModel).filter(
             OperationModel.id == operation_id)
         resultQuery = await session.execute(query)
-        operation_to_be_renewed: OperationModel = resultQuery.scalar_one_or_none()
+        operation_to_be_renewed = resultQuery.scalar_one_or_none()
 
         if operation_to_be_renewed:
-            operation_to_be_renewed.codigo = current_operation.codigo,
-            operation_to_be_renewed.data = current_operation.old_operation.data,
-            operation_to_be_renewed.quantidade = current_operation.old_operation.quantidade,
-            operation_to_be_renewed.valor_unitario = current_operation.operation.valor_unitario,
-            operation_to_be_renewed.tipo_operacao = current_operation.operation.tipo_operacao,
+            operation_to_be_renewed.codigo = current_operation.codigo
+            operation_to_be_renewed.data = datetime.now()
+            operation_to_be_renewed.quantidade = current_operation.quantidade
+            operation_to_be_renewed.valor_unitario = current_operation.valor_unitario
+            operation_to_be_renewed.tipo_operacao = current_operation.tipo_operacao
             operation_to_be_renewed.valor_parcial = (
-                current_operation.operation.quantidade * current_operation.operation.valor_unitario),
-            operation_to_be_renewed.corretagem = current_operation.operation.corretagem,
-            operation_to_be_renewed.taxa = current_operation.operation.taxa,
-            operation_to_be_renewed.valor_final = (current_operation.operation.valor_operacao + current_operation.operation.corretagem + current_operation.operation.taxa) if current_operation.operation.tipo_operacao == 'COMPRA' else (
-                current_operation.operation.valor_operacao - current_operation.operation.corretagem - current_operation.operation.taxa)
-        raise HTTPException(detail='Operação não encontrada',
-                            status_code=status.HTTP_404_NOT_FOUND)
+                current_operation.quantidade * current_operation.valor_unitario)
+            operation_to_be_renewed.corretagem = current_operation.corretagem
+            operation_to_be_renewed.taxa = (
+                current_operation.quantidade * current_operation.valor_unitario)*0.03
+            operation_to_be_renewed.valor_final = ((current_operation.quantidade * current_operation.valor_unitario) + current_operation.corretagem + ((
+                current_operation.quantidade * current_operation.valor_unitario)*0.03)) if current_operation.tipo_operacao == 'COMPRA' else (
+                    (current_operation.quantidade * current_operation.valor_unitario) - current_operation.corretagem - ((
+                        current_operation.quantidade * current_operation.valor_unitario)*0.03))
+
+            await session.commit()
+            return operation_to_be_renewed
+        else:
+            raise HTTPException(detail='Operação não encontrada',
+                                status_code=status.HTTP_404_NOT_FOUND)
 
 
 @router.delete('/{operation_id}', status_code=status.HTTP_204_NO_CONTENT)
