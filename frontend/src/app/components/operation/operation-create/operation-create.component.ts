@@ -28,4 +28,14 @@ export class OperationCreateComponent implements OnInit {
     this.router.navigate(['/operations']);
   }
 
+  onRadioButtonClicked(tipoOperacaoSelecionado: string) {
+    this.operation.tipo_operacao = tipoOperacaoSelecionado;
+  }
+
+  camposValidados() {
+    return (this.operation.tipo_operacao.toUpperCase() == 'COMPRA' || this.operation.tipo_operacao.toUpperCase() == 'VENDA')
+    && (this.operation.quantidade != null) &&  (this.operation.corretagem != null) &&  (this.operation.codigo != null)
+    && (this.operation.valor_unitario != null);
+  }
+
 }

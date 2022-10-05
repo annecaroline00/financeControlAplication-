@@ -4,10 +4,14 @@
       <mat-form-field><input matInput [(ngModel)]="operation.codigo" placeholder="Código" name="codigo"></mat-form-field>
       <mat-form-field><input matInput [(ngModel)]="operation.quantidade" placeholder="Quantidade" name="quantidade"></mat-form-field>
       <mat-form-field><input matInput [(ngModel)]="operation.valor_unitario" placeholder="Valor Unitário" name="valor_unitario"></mat-form-field>
-      <mat-form-field><input matInput [(ngModel)]="operation.tipo_operacao" placeholder="Tipo da Operação" name="tipo_operacao"></mat-form-field>
+      <p>Tipo de operação:</p>
+      <mat-radio-group>
+        <mat-radio-button (click)="onRadioButtonClicked('COMPRA')" value="COMPRA">COMPRA</mat-radio-button>
+        <mat-radio-button (click)="onRadioButtonClicked('VENDA')" value="VENDA">VENDA</mat-radio-button>
+      </mat-radio-group>
       <mat-form-field><input matInput [(ngModel)]="operation.corretagem" placeholder="Corretagem" name="corretagem"></mat-form-field>
   </form>
-  <button mat-raised-button (click)="createOperation()" color="primary">
+  <button mat-raised-button (click)="createOperation()" color="primary" [disabled]="!camposValidados()">
       Salvar
   </button>
 

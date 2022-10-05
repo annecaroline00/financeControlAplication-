@@ -16,7 +16,6 @@ router = APIRouter()
 async def criar_operacao(operation: OperationSchema, db: AsyncSession = Depends(get_session)):
     nova_operacao = OperationModel(
         codigo=operation.codigo,
-        data=operation.data,
         quantidade=operation.quantidade,
         valor_unitario=operation.valor_unitario,
         tipo_operacao=operation.tipo_operacao,

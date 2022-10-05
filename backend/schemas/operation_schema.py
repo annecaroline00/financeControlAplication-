@@ -7,7 +7,7 @@ from pydantic import BaseModel as SCBaseModel
 class OperationSchema(SCBaseModel):
     id: Optional[int]
     codigo: str
-    data: Optional[datetime] = datetime.utcnow
+    data: Optional[datetime]
     quantidade: int
     valor_unitario: float
     tipo_operacao: str
