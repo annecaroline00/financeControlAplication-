@@ -15,7 +15,7 @@
     <!-- Código Column -->
     <ng-container matColumnDef="codigo">
       <th mat-header-cell *matHeaderCellDef>Código</th>
-      <td mat-cell *matCellDef="let row">{{ row.codigo}}</td>
+      <td mat-cell *matCellDef="let row"><a routerLink="/operations/detail/{{ row.id }}">{{ row.codigo}}</a></td>
     </ng-container>
 
     <!-- Quantidade Column -->

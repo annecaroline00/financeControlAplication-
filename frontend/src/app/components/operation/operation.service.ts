@@ -25,6 +25,11 @@ export class OperationService {
     return this.httpClient.get<Operation[]>(this.baseURL);
   }
 
+  readAllByCodigo(id: string): Observable<Operation[]> {
+    const operationCodigo = `${this.baseURL}/${id}/details`;
+    return this.httpClient.get<Operation[]>(operationCodigo);
+  }
+
   readById(id: string): Observable<Operation> {
     const prodIdUrl = `${this.baseURL}/${id}`;
     return this.httpClient.get<Operation>(prodIdUrl);

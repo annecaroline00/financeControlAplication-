@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
 import { Operation } from '../operation.model';
 import { OperationService } from '../operation.service';
 
@@ -12,7 +13,9 @@ export class OperationListComponent implements OnInit {
   operations: Operation[] = [];
   displayedColumns = ['id', 'data', 'codigo', 'quantidade', 'valor_unitario', 'tipo_operacao', 'valor_parcial', 'corretagem', 'taxa', 'valor_final', 'action']
 
-  constructor(private operationService: OperationService) { }
+  constructor(private operationService: OperationService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.operationService.readAll().subscribe(ops => {
