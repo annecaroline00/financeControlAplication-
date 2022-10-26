@@ -1,1 +1,4 @@
 *.pyc
+*.iml
+backend/.idea/*
+node_modules/*

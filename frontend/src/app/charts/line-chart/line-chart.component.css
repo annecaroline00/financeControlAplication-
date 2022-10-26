@@ -1,0 +1,12 @@
+.chart-container canvas {
+  max-height: 125px;
+  width: auto;
+}
+
+.chart-container{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
