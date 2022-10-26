@@ -25,8 +25,6 @@ export class OperationService {
 
   getOperationsByCodigo(id: string, offset?: number, pageSize?: number, sortField?: string, sortDirection?: string): Observable<Operation[]> {
     const codigoUrl = `${this.baseURL}/${id}/details`;
-    console.log('offset = ' + offset);
-    console.log('pageSize = ' + pageSize);
     return this.httpClient.get<Operation[]>(codigoUrl)
     .pipe(
       map((response) => {
@@ -37,8 +35,14 @@ export class OperationService {
     );
   }
 
-  readAll(): Observable<Operation[]> {
-    return this.httpClient.get<Operation[]>(this.baseURL);
+  readAll(offset?: number, pageSize?: number): Observable<Operation[]> {
+    return this.httpClient.get<Operation[]>(this.baseURL).pipe(
+      map((response) => {
+        return this.getPagedData(
+          response,
+          offset, pageSize);
+      })
+    );
   }
 
   readAllByCodigo(id: string): Observable<Operation[]> {
@@ -69,6 +73,14 @@ export class OperationService {
   getOperationCount(id: string): Observable<number> {
     const codigoUrl = `${this.baseURL}/${id}/details`;
     return this.httpClient.get<Operation[]>(codigoUrl).pipe(
+      map((response) => {
+        return response.length;
+      })
+    );
+  }
+
+  getOperationCountAll(): Observable<number> {
+    return this.httpClient.get<Operation[]>(this.baseURL).pipe(
       map((response) => {
         return response.length;
       })

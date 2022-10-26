@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from "@angular/router";
 import { map } from 'rxjs/operators';
+import { OperationSummary } from '../operarion-summary/operation-summary';
 import { OperationService } from '../operation.service';
+import { OperationSummaryService } from './../operarion-summary/operation-summary.service';
 import { Operation } from './../operation.model';
 
 @Component({
@@ -37,11 +39,13 @@ export class OperationDetailComponent implements OnInit {
       };
     })
   );
+  miniCardData: OperationSummary[];
 
   constructor(private operationService: OperationService,
     private router: Router,
     private route: ActivatedRoute,
-    private breakpointObserver: BreakpointObserver) { }
+    private breakpointObserver: BreakpointObserver,
+    private operationSummaryService: OperationSummaryService) { }
 
   ngOnInit(): void {
     const id = +this.route.snapshot.paramMap.get('id');
@@ -49,6 +53,11 @@ export class OperationDetailComponent implements OnInit {
     this.operationService.getOperationCount(id+'').subscribe({
       next: operationCount => {
         this.dataLength = operationCount;
+      }
+    });
+    this.operationSummaryService.getOperationSummary().subscribe({
+      next: summaryData => {
+        this.miniCardData = summaryData;
       }
     });
   }

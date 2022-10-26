@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Operation } from '../operation.model';
 import { OperationService } from '../operation.service';
@@ -10,6 +11,9 @@ import { OperationService } from '../operation.service';
 })
 export class OperationListComponent implements OnInit {
 
+  dataLength: number;
+  pageIndex: number = 0;
+  pageSize: number = 5;
   operations: Operation[] = [];
   displayedColumns = ['id', 'data', 'codigo', 'quantidade', 'valor_unitario', 'tipo_operacao', 'valor_parcial', 'corretagem', 'taxa', 'valor_final', 'action']
 
@@ -18,9 +22,27 @@ export class OperationListComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.operationService.readAll().subscribe(ops => {
-      this.operations = ops;
-    })
+    this.getServerData(null);
+
+    this.operationService.getOperationCountAll().subscribe({
+      next: operationCount => {
+        this.dataLength = operationCount;
+      }
+    });
+
+  }
+
+  public getServerData(event?:PageEvent){
+    if (event != null) {
+      this.pageIndex = event.pageIndex;
+      this.pageSize = event.pageSize;
+      this.dataLength = event.length;
+    }
+    return this.operationService.readAll(
+      this.pageIndex * this.pageSize, this.pageSize)
+      .subscribe((operations) => {
+        this.operations = operations;
+      });
   }
 
 }

@@ -28,6 +28,7 @@ import { OperationListComponent } from './components/operation/operation-list/op
 import { OperationUpdateComponent } from './components/operation/operation-update/operation-update.component';
 import { NavComponent } from './nav/nav.component';
 import { OperationCrudComponent } from './views/operation/operation-crud/operation-crud.component';
+import { MiniCardComponent } from './mini-card/mini-card.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { OperationCrudComponent } from './views/operation/operation-crud/operati
     CardComponent,
     NavComponent,
     BarChartComponent,
+    MiniCardComponent,
   ],
   imports: [
     BrowserModule,
