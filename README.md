@@ -27,19 +27,31 @@ Este é um passo-a-passo que orienta o que deve ser feito para ter um ambiente d
 npm install
 ```
 
-04. Navegar até a pasta backend e instalar o FastAPI, Uvicorn, psycopg2-binary, sqlalchemy e asyncpg:
+04. Navegar até a pasta docker e executar o comando a seguir:
+
+```
+docker-compose -p recursos-projeto -f docker-compose-yml up -d
+```
+
+05. Navegar até a pasta backend e instalar o FastAPI, Uvicorn, psycopg2-binary, sqlalchemy e asyncpg:
 
 ```
 pip install fastapi uvicorn psycopg2-binary sqlalchemy asyncpg
 ```
 
-05. Para executar o backend, navegar até a pasta backend e executar o comando a seguir:
+06. Criar as tabelas com o comando a seguir:
+
+```
+python criar_tabelas.py
+```
+
+07. Executar o Python com o comando a seguir:
 
 ```
 python main.py
 ```
 
-06. Para executar o frontend, navegar até a pasta frontend e executar o comando a seguir:
+08. Para executar o frontend, navegar até a pasta frontend e executar o comando a seguir:
 
 ```
 ng serve
