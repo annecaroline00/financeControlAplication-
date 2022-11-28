@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "ng2-charts-schematics": "^0.1.7"
+  }
+}

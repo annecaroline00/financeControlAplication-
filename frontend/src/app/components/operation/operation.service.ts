@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Operation } from './operation.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +23,26 @@ export class OperationService {
     })
   }
 
-  readAll(): Observable<Operation[]> {
-    return this.httpClient.get<Operation[]>(this.baseURL);
+  getOperationsByCodigo(id: string, offset?: number, pageSize?: number, sortField?: string, sortDirection?: string): Observable<Operation[]> {
+    const codigoUrl = `${this.baseURL}/${id}/details`;
+    return this.httpClient.get<Operation[]>(codigoUrl)
+    .pipe(
+      map((response) => {
+        return this.getPagedData(
+          response,
+          offset, pageSize);
+      })
+    );
+  }
+
+  readAll(offset?: number, pageSize?: number): Observable<Operation[]> {
+    return this.httpClient.get<Operation[]>(this.baseURL).pipe(
+      map((response) => {
+        return this.getPagedData(
+          response,
+          offset, pageSize);
+      })
+    );
   }
 
   readAllByCodigo(id: string): Observable<Operation[]> {
@@ -49,4 +69,26 @@ export class OperationService {
   create(operation: Operation): Observable<Operation> {
     return this.httpClient.post<Operation>(this.baseURL, operation);
   }
+
+  getOperationCount(id: string): Observable<number> {
+    const codigoUrl = `${this.baseURL}/${id}/details`;
+    return this.httpClient.get<Operation[]>(codigoUrl).pipe(
+      map((response) => {
+        return response.length;
+      })
+    );
+  }
+
+  getOperationCountAll(): Observable<number> {
+    return this.httpClient.get<Operation[]>(this.baseURL).pipe(
+      map((response) => {
+        return response.length;
+      })
+    );
+  }
+
+  public getPagedData(data: Operation[], startIndex: number, pageSize: number) {
+    return data.splice(startIndex, pageSize);
+  }
+
 }
