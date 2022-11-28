@@ -1,7 +1,7 @@
 export class OperationSummary {
   title: string;
   value: number;
-  isIncrease: boolean;
+  trend: number;
   color: string;
   percentValue: number;
   icon: string;

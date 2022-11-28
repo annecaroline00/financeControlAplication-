@@ -16,9 +16,10 @@ import { Operation } from './../operation.model';
 export class OperationDetailComponent implements OnInit {
 
   dataLength: number;
+  allOperationsByCode: Operation[] = [];
   pageIndex: number = 0;
   pageSize: number = 2;
-  operations: Operation[] = [];
+  pagedOperations: Operation[] = [];
   displayedColumns = ['id', 'data', 'codigo', 'quantidade', 'valor_unitario', 'tipo_operacao', 'valor_parcial', 'corretagem', 'taxa', 'valor_final', 'action'];
   cardLayout = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
@@ -48,21 +49,10 @@ export class OperationDetailComponent implements OnInit {
     private operationSummaryService: OperationSummaryService) { }
 
   ngOnInit(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
     this.getServerData(null);
-    this.operationService.getOperationCount(id+'').subscribe({
-      next: operationCount => {
-        this.dataLength = operationCount;
-      }
-    });
-    this.operationSummaryService.getOperationSummary().subscribe({
-      next: summaryData => {
-        this.miniCardData = summaryData;
-      }
-    });
   }
 
-  public getServerData(event?:PageEvent){
+  public getServerData(event?:PageEvent) {
     const id = +this.route.snapshot.paramMap.get('id');
 
     if (event != null) {
@@ -71,16 +61,26 @@ export class OperationDetailComponent implements OnInit {
       this.dataLength = event.length;
     }
 
-    return this.operationService.getOperationsByCodigo(id+'',
-      this.pageIndex * this.pageSize,
-      this.pageSize
-      ).subscribe((operations) => {
-        this.operations = operations;
-      });
+    this.operationService.readAllByCodigo(id+'').subscribe({
+      next: allOperationsByCode => {
+        this.dataLength = allOperationsByCode.length;
+        this.allOperationsByCode = allOperationsByCode;
+        this.operationSummaryService.getOperationSummary(this.allOperationsByCode).subscribe({
+          next: summaryData => {
+            this.miniCardData = summaryData;
+          }
+        });
+        this.pagedOperations = this.operationService.getPagedData(
+          this.allOperationsByCode,
+          this.pageIndex * this.pageSize, this.pageSize);
+          return this.pagedOperations;
+      }
+    });
+
+    return this.pagedOperations;
   }
 
   voltar(): void {
     this.router.navigate(["/operations"]);
   }
-
 }

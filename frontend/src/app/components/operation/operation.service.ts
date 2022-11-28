@@ -87,7 +87,7 @@ export class OperationService {
     );
   }
 
-  private getPagedData(data: Operation[], startIndex: number, pageSize: number) {
+  public getPagedData(data: Operation[], startIndex: number, pageSize: number) {
     return data.splice(startIndex, pageSize);
   }
 

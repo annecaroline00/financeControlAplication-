@@ -4,7 +4,7 @@
     <!--Mini Cards-->
     <mat-grid-tile *ngFor="let mc of miniCardData" [colspan]="( cardLayout | async )?.miniCard.cols"
       [rowspan]="( cardLayout | async )?.miniCard.rows">
-      <app-mini-card [icon]="mc.icon" [title]="mc.title" [value]="mc.value" [color]="mc.color" [isIncrease]="mc.isIncrease" duration="desde o mês passado" [percentValue]="mc.percentValue" [isCurrency]="mc. isCurrency"></app-mini-card>
+      <app-mini-card [icon]="mc.icon" [title]="mc.title" [value]="mc.value" [color]="mc.color" [trend]="mc.trend" duration="desde o mês passado" [percentValue]="mc.percentValue" [isCurrency]="mc. isCurrency"></app-mini-card>
     </mat-grid-tile>
 
     <!--Charts-->
@@ -22,7 +22,7 @@
     <!--Table-->
     <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
       <app-card title="Operações"><div class="mat-elevation-z4">
-        <table mat-table [dataSource]="operations" matSort aria-label="Elements">
+        <table mat-table [dataSource]="pagedOperations" matSort aria-label="Elements">
           <!-- Id Column -->
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>Identificador</th>

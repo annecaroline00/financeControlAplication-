@@ -10,7 +10,7 @@ export class MiniCardComponent implements OnInit {
   @Input() title: string;
   @Input() value: number;
   @Input() color: string;
-  @Input() isIncrease: boolean;
+  @Input() trend: number;
   @Input() isCurrency: boolean;
   @Input() duration: string;
   @Input() percentValue: number;
@@ -19,4 +19,5 @@ export class MiniCardComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
 }
