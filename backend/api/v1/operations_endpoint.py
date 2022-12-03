@@ -25,9 +25,9 @@ async def criar_operacao(operation: OperationSchema, db: AsyncSession = Depends(
         valor_final=((operation.quantidade * operation.valor_unitario) +
                      operation.corretagem + ((operation.quantidade * operation.valor_unitario)*0.0003))
         if operation.tipo_operacao == 'COMPRA' else (
-            (operation.quantidade * operation.valor_unitario) - operation.corretagem - ((operation.quantidade * operation.valor_unitario)*0.0003))
-
+            (operation.quantidade * operation.valor_unitario) - operation.corretagem - ((operation.quantidade * operation.valor_unitario)*0.0003)),
     )
+    nova_operacao.preco_medio = nova_operacao.valor_final / nova_operacao.quantidade
     db.add(nova_operacao)
     await db.commit()
     return nova_operacao
@@ -98,6 +98,8 @@ async def put_operation(operation_id: int, current_operation: OperationSchema, d
                 current_operation.quantidade * current_operation.valor_unitario)*0.0003)) if current_operation.tipo_operacao == 'COMPRA' else (
                     (current_operation.quantidade * current_operation.valor_unitario) - current_operation.corretagem - ((
                         current_operation.quantidade * current_operation.valor_unitario)*0.0003))
+            operation_to_be_renewed.preco_medio = (
+                operation_to_be_renewed.valor_final)/(operation_to_be_renewed.quantidade)
 
             await session.commit()
             return operation_to_be_renewed
