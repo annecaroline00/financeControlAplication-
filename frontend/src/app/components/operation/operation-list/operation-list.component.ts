@@ -15,7 +15,7 @@ export class OperationListComponent implements OnInit {
   pageIndex: number = 0;
   pageSize: number = 5;
   operations: Operation[] = [];
-  displayedColumns = ['id', 'data', 'codigo', 'quantidade', 'valor_unitario', 'tipo_operacao', 'valor_parcial', 'corretagem', 'taxa', 'valor_final', 'action']
+  displayedColumns = ['data', 'codigo', 'quantidade', 'valor_unitario', 'tipo_operacao', 'valor_parcial', 'corretagem', 'taxa', 'valor_final', 'action']
 
   constructor(private operationService: OperationService,
     private router: Router,

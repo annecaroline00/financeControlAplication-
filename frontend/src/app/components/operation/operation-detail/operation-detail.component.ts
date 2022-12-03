@@ -20,7 +20,7 @@ export class OperationDetailComponent implements OnInit {
   pageIndex: number = 0;
   pageSize: number = 2;
   pagedOperations: Operation[] = [];
-  displayedColumns = ['id', 'data', 'codigo', 'quantidade', 'valor_unitario', 'tipo_operacao', 'valor_parcial', 'corretagem', 'taxa', 'valor_final', 'action'];
+  displayedColumns = ['data', 'codigo', 'quantidade', 'valor_unitario', 'tipo_operacao', 'valor_parcial', 'corretagem', 'taxa', 'valor_final', 'action'];
   cardLayout = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
       if (matches) {
