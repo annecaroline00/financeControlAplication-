@@ -13,7 +13,7 @@ Essas instruções permitirão que você obtenha uma cópia do projeto em opera�
 Antes de ter as tecnologias instaladas, é crucial que já tenha o docker instalado com postgres, os quais podem ser obtidos seguindo [este tutorial](https://felixgilioli.medium.com/como-rodar-um-banco-de-dados-postgres-com-docker-6aecf67995e1).
 
 
-### 🔧 Instalação
+### 🔧 Ambiente em execução
 
 Este é um passo-a-passo que orienta o que deve ser feito para ter um ambiente de desenvolvimento em execução, por meio da linha de comando.
 
@@ -30,13 +30,13 @@ npm install
 04. Navegar até a pasta docker e executar o comando a seguir:
 
 ```
-docker-compose -p recursos-projeto -f docker-compose-yml up -d
+docker-compose -p recursos-projeto -f docker-compose.yml up -d
 ```
 
-05. Navegar até a pasta backend e instalar o FastAPI, Uvicorn, psycopg2-binary, sqlalchemy e asyncpg:
+05. Navegar até a pasta backend e instalar o FastAPI, Uvicorn, psycopg2-binary, sqlalchemy, sphinx, m2r2 e asyncpg:
 
 ```
-pip install fastapi uvicorn psycopg2-binary sqlalchemy asyncpg
+pip install fastapi uvicorn psycopg2-binary sqlalchemy asyncpg sphinx m2r2
 ```
 
 06. Criar as tabelas com o comando a seguir:
@@ -55,6 +55,12 @@ python main.py
 
 ```
 ng serve
+```
+
+09. Para visualizar a documentação HTML do projeto, navegar até a pasta docs e executar o comando a seguir e abrir o navegador no endereço localhost na porta 8000:
+
+```
+python -m html.server
 ```
 
 
