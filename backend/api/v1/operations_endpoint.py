@@ -2,10 +2,9 @@ from datetime import datetime
 from typing import List
 
 from core.dependencies import get_session
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from models.operation_model import OperationModel
 from schemas.operation_schema import OperationSchema
-from sqlalchemy import DateTime, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -40,6 +39,25 @@ async def get_operations(db: AsyncSession = Depends(get_session)):
         resultQuery = await session.execute(query)
         operations: List[OperationModel] = resultQuery.scalars().all()
         return operations
+
+
+@router.get('/{operation_id}/details', response_model=List[OperationSchema], status_code=status.HTTP_200_OK)
+async def get_operations_por_codigo(operation_id: int, db: AsyncSession = Depends(get_session)):
+    async with db as session:
+        query_individual = select(OperationModel).filter(
+            OperationModel.id == operation_id)
+        resultQueryIndividual = await session.execute(query_individual)
+        operation: OperationModel = resultQueryIndividual.scalar_one_or_none()
+        print('operation = ', operation.codigo)
+        if operation:
+            query = select(OperationModel).filter(
+                operation.codigo == OperationModel.codigo)
+            resultQuery = await session.execute(query)
+            operations: List[OperationModel] = resultQuery.scalars().all()
+            return operations
+
+        raise HTTPException(detail='Operação não encontrada',
+                            status_code=status.HTTP_404_NOT_FOUND)
 
 
 @router.get('/{operation_id}', response_model=OperationSchema, status_code=status.HTTP_200_OK)
