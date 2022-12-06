@@ -17,3 +17,4 @@ class OperationModel(settings.DB_BASE_MODEL):
     corretagem: float = Column(Float)
     taxa: float = Column(Float)
     valor_final: float = Column(Float)
+    preco_medio: float = Column(Float)

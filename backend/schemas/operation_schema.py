@@ -15,6 +15,7 @@ class OperationSchema(SCBaseModel):
     corretagem: float
     taxa: Optional[float]
     valor_final: Optional[float]
+    preco_medio: Optional[float]
 
     class Config:
         orm_mode = True
